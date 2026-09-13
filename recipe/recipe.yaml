@@ -13,6 +13,14 @@ build:
   number: 0
   script:
     content:
+      # cc-rs appends the generic ${CFLAGS} to every target it compiles for, so the
+      # build scripts it compiles for the build platform also get the host target's
+      # -march/-mabi flags and fail. The rust activation already mirrors these into
+      # the per-triple CFLAGS_<triple>/CXXFLAGS_<triple>/CPPFLAGS_<triple> variables,
+      # so the generic ones are redundant.
+      - if: linux and build_platform != target_platform
+        then:
+          - unset CFLAGS CXXFLAGS CPPFLAGS
       - if: unix
         then:
           - cargo auditable install --locked --no-track --bin all-smi --root ${{ PREFIX }} --path .
