@@ -28,6 +28,15 @@ build:
       - if: target_platform == "linux-ppc64le"
         then:
           - export CARGO_BUILD_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-fuse-ld=bfd"
+      # AWS-LC's ARM64 assembly is GAS syntax, which cl.exe doesn't understand — it
+      # skips the `.S` files with D9024/D9027 and the link then dies on the missing
+      # object (LNK1181, chacha-armv8.o). aws-lc-sys reaches for clang-cl on this
+      # target by itself, but only when no CC is set, and the compiler activation
+      # sets CC_aarch64_pc_windows_msvc=cl.exe. Its own AWS_LC_SYS_CC knob wins over
+      # that, and only for this crate: every other build script keeps using cl.exe.
+      - if: target_platform == "win-arm64"
+        then:
+          - set "AWS_LC_SYS_CC=clang-cl"
       - if: unix
         then:
           - cargo auditable install --locked --no-track --bin all-smi --root ${{ PREFIX }} --path .
@@ -46,8 +55,12 @@ requirements:
     - cmake
     - if: unix
       then: make
-    - if: win
+    # aws-lc-sys assembles its x86 assembly with nasm, and needs clang-cl for the
+    # GAS-syntax ARM64 assembly (see the build script)
+    - if: target_platform == "win-64"
       then: nasm
+    - if: target_platform == "win-arm64"
+      then: clang
     # tonic-prost-build compiles the TPU gRPC client, Linux targets only
     - if: linux
       then: libprotobuf
