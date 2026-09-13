@@ -10,7 +10,7 @@ source:
   sha256: 1feeb5f4d10489858220ce051b5685338063f0ad0b2588d8375bbc51516c62d8
 
 build:
-  number: 0
+  number: 1
   script:
     content:
       # cc-rs appends the generic ${CFLAGS} to every target it compiles for, so the
