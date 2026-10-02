@@ -1,5 +1,5 @@
 context:
-  version: "0.26.3"
+  version: "0.27.0"
 
 package:
   name: all-smi
@@ -7,10 +7,10 @@ package:
 
 source:
   url: https://github.com/lablup/all-smi/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 1feeb5f4d10489858220ce051b5685338063f0ad0b2588d8375bbc51516c62d8
+  sha256: 31703c3b4a0bcb53eec9bd9c613a4327e310459bb5f22d0b276a69de989b3a8f
 
 build:
-  number: 1
+  number: 0
   script:
     content:
       # cc-rs appends the generic ${CFLAGS} to every target it compiles for, so the
