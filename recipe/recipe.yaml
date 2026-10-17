@@ -1,5 +1,5 @@
 context:
-  version: "0.27.1"
+  version: "0.28.0"
 
 package:
   name: all-smi
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/lablup/all-smi/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 52d01dbfa3565b38860538edfcffd834c5190649c926d605d1677883371fb75c
+  sha256: 252c719d5ce0edbc8f99ad83849bd261a881b76691a339307e097747bf3d1e37
 
 build:
   number: 0
